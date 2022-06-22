@@ -34,8 +34,8 @@ python set_buy_orders.py
 [steampy]: <https://github.com/bukson/steampy>
 [steam-market]: <https://github.com/woctezuma/steam-market>
 
-[pyup]: <https://pyup.io/repos/github/woctezuma/steam-next-fest/>
-[dependency-image]: <https://pyup.io/repos/github/woctezuma/steam-next-fest/shield.svg>
-[python3-image]: <https://pyup.io/repos/github/woctezuma/steam-next-fest/python-3-shield.svg>
-[codacy]: <https://app.codacy.com/gh/woctezuma/steam-next-fest/>
-[codacy-image]: <https://api.codacy.com/project/badge/Grade/7a64d60f823a4c8bb38217055abf3cb1>
+[pyup]: <https://pyup.io/repos/github/woctezuma/steampy-buy-orders/>
+[dependency-image]: <https://pyup.io/repos/github/woctezuma/steampy-buy-orders/shield.svg>
+[python3-image]: <https://pyup.io/repos/github/woctezuma/steampy-buy-orders/python-3-shield.svg>
+[codacy]: <https://app.codacy.com/gh/woctezuma/steampy-buy-orders/>
+[codacy-image]: <https://api.codacy.com/project/badge/Grade/8ac75ffbd0d647fcb3720dbff8a64eee>
