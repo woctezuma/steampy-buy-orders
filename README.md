@@ -1,7 +1,5 @@
 # Steampy: buy orders
 
-[![Updates][dependency-image]][pyup]
-[![Python 3][python3-image]][pyup]
 [![Code Quality][codacy-image]][codacy]
 
 This repository contains Python code to automatically set buy orders with [`steampy`][steampy].
