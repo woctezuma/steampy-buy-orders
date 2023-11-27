@@ -1,8 +1,8 @@
 def get_target_appids(price_to_appids: dict[str, list[str]]) -> set:
-    target_appids_as_list = []
+    target_appids = []
     for app_list in price_to_appids.values():
-        target_appids_as_list += app_list
-    return set(target_appids_as_list)
+        target_appids += app_list
+    return set(target_appids)
 
 
 def get_appid_to_cards(foil_cards: list[str], target_appids: list[int]) -> None:
