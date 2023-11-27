@@ -2,6 +2,9 @@
 
 [![Code Quality][codacy-image]][codacy]
 
+> [!Warning]
+> I have cleaned up the original script, which was messy, but I have not tested the result. **Use at your own risk!**
+
 This repository contains Python code to automatically set buy orders with [`steampy`][steampy].
 
 ## Requirements
