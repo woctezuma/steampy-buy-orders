@@ -28,7 +28,7 @@ def main() -> None:
     price_to_appids = load_json(APPIDS_FNAME)
     price_to_appids_to_skip = load_json(APPIDS_TO_SKIP_FNAME)
 
-    clean_price_to_appids(price_to_appids, price_to_appids_to_skip)
+    price_to_appids = clean_price_to_appids(price_to_appids, price_to_appids_to_skip)
 
     ## Cancel buy orders
 
