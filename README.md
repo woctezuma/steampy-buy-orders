@@ -25,9 +25,9 @@ pip install -r requirements.txt
 }
 ```
 
--   Get a [listings of foil cards][foil-cards] from [`steam-market`][steam-market].
+-   Get a snapshot of the [listings of foil cards][foil-cards] from [`steam-market`][steam-market].
 
-- Specify the foil cards of interest in `data/price_to_appids.json`.
+- Specify the target prices along with the appIDs of interest in `data/price_to_appids.json`.
 
 ## Usage
 
