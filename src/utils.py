@@ -1,8 +1,8 @@
-def get_target_appids(price_to_appids: dict[str, list[int]]) -> set:
+def get_target_appids(price_to_appids: dict[str, list[int]]) -> list[int]:
     target_appids = []
     for app_list in price_to_appids.values():
         target_appids += app_list
-    return set(target_appids)
+    return list(set(target_appids))
 
 
 def get_appid_to_cards(
