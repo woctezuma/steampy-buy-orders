@@ -1,4 +1,4 @@
-def get_target_appids(price_to_appids: dict[str, list[str]]) -> set:
+def get_target_appids(price_to_appids: dict[str, list[int]]) -> set:
     target_appids = []
     for app_list in price_to_appids.values():
         target_appids += app_list
@@ -20,9 +20,9 @@ def get_appid_to_cards(
 
 
 def clean_price_to_appids(
-    price_to_appids: dict[str, list[str]],
-    price_to_appids_to_skip: dict[str, list[str]],
-) -> dict[str, list[str]]:
+    price_to_appids: dict[str, list[int]],
+    price_to_appids_to_skip: dict[str, list[int]],
+) -> dict[str, list[int]]:
     for price, appids in price_to_appids.items():
         if price in price_to_appids_to_skip:
             inter = set(appids).intersection(price_to_appids_to_skip[price])

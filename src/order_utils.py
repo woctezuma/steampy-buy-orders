@@ -26,8 +26,8 @@ def cancel_buy_orders(
 def set_buy_orders(
     steam_client: SteamClient,
     listings: dict,
-    price_to_appids: dict[str, str],
-    appid_to_cards: dict[str, str],
+    price_to_appids: dict[str, list[int]],
+    appid_to_cards: dict[int, list[str]],
     quantity: int = 100,
 ) -> None:
     card_names_with_existing_buy_orders = [
