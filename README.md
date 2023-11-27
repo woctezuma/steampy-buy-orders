@@ -18,7 +18,7 @@ pip install -r requirements.txt
 - To automatically set buy orders, run:
 
 ```bash
-python set_buy_orders.py
+python apply_workflow.py
 ```
 
 ## References
