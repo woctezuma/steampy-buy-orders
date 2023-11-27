@@ -1,0 +1,36 @@
+files: \.(py|json|yaml)$
+default_stages: [commit, manual]
+repos:
+
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+    - id: ruff
+      args: [
+      --fix,
+      --unsafe-fixes,
+      --exit-non-zero-on-fix,
+      --target-version, "py312",
+      --select, "ALL",
+      --ignore, "C90,D,E501,PLR091,T20"
+      ]
+    - id: ruff-format
+
+-   repo: https://github.com/dosisod/refurb
+    rev: v1.24.0
+    hooks:
+    - id: refurb
+      args: [--python-version, "3.12"]
+      stages: [manual]
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    - id: end-of-file-fixer
+    - id: pretty-format-json
+      args: [
+      --autofix,
+      --indent, "4",
+      --no-ensure-ascii,
+      --no-sort-keys
+      ]
