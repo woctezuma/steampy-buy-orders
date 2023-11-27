@@ -1,0 +1,5 @@
+DATA_FOLDER: str = "data/"
+SECRETS_FNAME: str = f"{DATA_FOLDER}secrets.json"
+FOIL_CARDS_FNAME: str = f"{DATA_FOLDER}listings_for_foil_cards.json"
+APPIDS_FNAME: str = f"{DATA_FOLDER}price_to_appids.json"
+APPIDS_TO_SKIP_FNAME: str = f"{DATA_FOLDER}price_to_appids.to_skip.json"

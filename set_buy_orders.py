@@ -1,19 +1,19 @@
-import json
-import time
-from pathlib import Path
-
 from steampy.client import SteamClient
-from steampy.exceptions import ApiException
-from steampy.models import Currency
-from steampy.utils import GameOptions
 
-with Path("data/price_to_appids.to_skip.json").open() as f:
-    price_to_appids_0 = json.load(f)
+from src.data_utils import (
+    APPIDS_FNAME,
+    APPIDS_TO_SKIP_FNAME,
+    FOIL_CARDS_FNAME,
+    SECRETS_FNAME,
+)
+from src.json_utils import load_json
+from src.order_utils import cancel_buy_orders, set_buy_orders
+from src.print_utils import show_low_quantity_buy_orders
+from src.utils import clean_price_to_appids, get_appid_to_cards, get_target_appids
 
 
 def main() -> None:
-    with Path("secrets.json").open() as f:
-        secrets = json.load(f)
+    secrets = load_json(SECRETS_FNAME)
 
     steam_client = SteamClient(secrets["api_key"])
     steam_client.login(secrets["username"], secrets["password"], secrets["steam_guard"])
@@ -21,101 +21,43 @@ def main() -> None:
     # Reference: https://github.com/bukson/steampy#market-methods
     listings = steam_client.market.get_my_market_listings()
 
-    print_threshold = 3
-    for i in listings["buy_orders"].values():
-        if i["quantity"] < print_threshold:
-            print(i)
-    # > {'order_id': '4968003847', 'quantity': 1, 'price': '0,12€', 'item_name': 'Railgun (Foil)'}
-    # > {'order_id': '4968008301', 'quantity': 2, 'price': '0,12€', 'item_name': 'Survivor (Foil)'}
-    # > {'order_id': '4968028709', 'quantity': 2, 'price': '0,09€', 'item_name': 'Close Quarters Combat (Foil)'}
-    # > {'order_id': '4968053367', 'quantity': 1, 'price': '0,11€', 'item_name': 'Cheeseburger (Foil)'}
+    show_low_quantity_buy_orders(listings, quantity_threshold=3)
 
-    # Reference: https://gist.github.com/woctezuma/23e34a3bc4c0304840ce406903aec514
-    price_to_appids = price_to_appids_0
+    ## Clean dictionary
 
-    remove_app_ids = False
+    price_to_appids = load_json(APPIDS_FNAME)
+    price_to_appids_to_skip = load_json(APPIDS_TO_SKIP_FNAME)
 
-    if remove_app_ids:
-        for price, appids in price_to_appids.items():
-            if price in price_to_appids_0:
-                print(
-                    f"[price: {price} cents] Removing {sorted(set(appids).intersection(price_to_appids_0[price]), key=str)}",
-                )
-                price_to_appids[price] = list(
-                    set(appids).difference(price_to_appids_0[price]),
-                )
+    clean_price_to_appids(price_to_appids, price_to_appids_to_skip)
 
-    with Path("../steam-market/data/listings_for_foil_cards.json").open(
-        encoding="utf8",
-    ) as f:
-        foil_cards = json.load(f)
+    ## Cancel buy orders
 
-    target_appids_as_list = []
-    for app_list in price_to_appids.values():
-        target_appids_as_list += app_list
-    target_appids = set(target_appids_as_list)
+    cancel_buy_orders(
+        steam_client,
+        listings,
+        price_of_interest="0,11€",
+        names_to_keep=(
+            "Cheeki Breeki",
+            "Cop",
+            "Nagibator",
+            "Survivalist",
+            "Zombie",
+        ),
+    )
 
-    appid_to_cards: dict[int, list[str]] = {}
-    for card_name in foil_cards:
-        app_id = int(card_name.split("-")[0])
-        if app_id in target_appids:
-            if app_id not in appid_to_cards:
-                appid_to_cards[app_id] = []
-            appid_to_cards[app_id].append(card_name)
+    ## Set buy orders
 
-    ## To cancel buy orders:
-    remove_buy_orders = False
+    foil_cards = load_json(FOIL_CARDS_FNAME)
+    target_appids = get_target_appids(price_to_appids)
+    appid_to_cards = get_appid_to_cards(foil_cards, target_appids)
 
-    if remove_buy_orders:
-        for e in listings["buy_orders"].values():
-            if e["price"] == "0,11€":
-                if any(
-                    s in e["item_name"]
-                    for s in (
-                        "Cheeki Breeki",
-                        "Cop",
-                        "Nagibator",
-                        "Survivalist",
-                        "Zombie",
-                    )
-                ):
-                    continue
-                print(e["item_name"])
-                print(e["order_id"])
-                response = steam_client.market.cancel_sell_order(e["order_id"])
-                time.sleep(1)
-
-    card_names_with_existing_buy_orders = [
-        e["item_name"] for e in listings["buy_orders"].values()
-    ]
-
-    for price_single_item in price_to_appids:
-        # Set 100 buy orders at {price_single_item} for every foil card for every appID in the list price_to_appids[price_single_item]
-        quantity = 100
-
-        for app_id in sorted(price_to_appids[price_single_item], key=str):
-            print(f"AppID: {app_id}")
-            for market_name in appid_to_cards[app_id]:
-                print(f"- {market_name}")
-
-                card_name = market_name.lstrip(f"{app_id}-")
-                if card_name in card_names_with_existing_buy_orders:
-                    continue
-                print("TODO")
-
-                try:
-                    response = steam_client.market.create_buy_order(
-                        market_name,
-                        price_single_item,
-                        quantity,
-                        GameOptions.STEAM,
-                        Currency.EURO,
-                    )
-                except ApiException:
-                    response = None
-
-                print(response)
-                time.sleep(1)
+    set_buy_orders(
+        steam_client,
+        listings,
+        price_to_appids,
+        appid_to_cards,
+        quantity=100,
+    )
 
 
 if __name__ == "__main__":
