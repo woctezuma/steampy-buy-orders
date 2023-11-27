@@ -1,4 +1,4 @@
-def get_target_appids(price_to_appids: dict[str, str]) -> set:
+def get_target_appids(price_to_appids: dict[str, list[str]]) -> set:
     target_appids_as_list = []
     for app_list in price_to_appids.values():
         target_appids_as_list += app_list
@@ -16,9 +16,9 @@ def get_appid_to_cards(foil_cards: list[str], target_appids: list[int]) -> None:
 
 
 def clean_price_to_appids(
-    price_to_appids: dict[str, str],
-    price_to_appids_to_skip: dict[str, str],
-) -> dict[str, str]:
+    price_to_appids: dict[str, list[str]],
+    price_to_appids_to_skip: dict[str, list[str]],
+) -> dict[str, list[str]]:
     for price, appids in price_to_appids.items():
         if price in price_to_appids_to_skip:
             inter = set(appids).intersection(price_to_appids_to_skip[price])
