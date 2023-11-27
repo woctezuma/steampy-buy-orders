@@ -6,7 +6,7 @@ from src.data_utils import (
     FOIL_CARDS_FNAME,
     SECRETS_FNAME,
 )
-from src.json_utils import load_json
+from src.json_utils import load_json, load_json_as_list
 from src.order_utils import cancel_buy_orders, set_buy_orders
 from src.print_utils import show_low_quantity_buy_orders
 from src.utils import clean_price_to_appids, get_appid_to_cards, get_target_appids
@@ -47,7 +47,7 @@ def main() -> None:
 
     ## Set buy orders
 
-    foil_cards = load_json(FOIL_CARDS_FNAME)
+    foil_cards = load_json_as_list(FOIL_CARDS_FNAME)
     target_appids = get_target_appids(price_to_appids)
     appid_to_cards = get_appid_to_cards(foil_cards, target_appids)
 
