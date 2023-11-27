@@ -5,7 +5,10 @@ def get_target_appids(price_to_appids: dict[str, list[str]]) -> set:
     return set(target_appids)
 
 
-def get_appid_to_cards(foil_cards: list[str], target_appids: list[int]) -> None:
+def get_appid_to_cards(
+    foil_cards: list[str],
+    target_appids: list[int],
+) -> dict[int, list[str]]:
     appid_to_cards: dict[int, list[str]] = {}
     for card_name in foil_cards:
         app_id = int(card_name.split("-")[0])
@@ -13,6 +16,7 @@ def get_appid_to_cards(foil_cards: list[str], target_appids: list[int]) -> None:
             if app_id not in appid_to_cards:
                 appid_to_cards[app_id] = []
             appid_to_cards[app_id].append(card_name)
+    return appid_to_cards
 
 
 def clean_price_to_appids(
