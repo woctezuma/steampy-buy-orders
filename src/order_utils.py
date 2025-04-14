@@ -18,7 +18,7 @@ def cancel_buy_orders(
         if e["price"] == price_of_interest:
             if any(s in e["item_name"] for s in names_to_keep):
                 continue
-            print(f"{e["item_name"]} -> {e["order_id"]}")
+            print(f"{e['item_name']} -> {e['order_id']}")
             steam_client.market.cancel_sell_order(e["order_id"])
             time.sleep(COOLDOWN_IN_SECONDS)
 
