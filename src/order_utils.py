@@ -34,10 +34,10 @@ def set_buy_orders(
         e["item_name"] for e in listings["buy_orders"].values()
     ]
 
-    for price_single_item in price_to_appids:
+    for price_single_item, app_ids in price_to_appids.items():
         # Set {quantity} buy orders at {price_single_item} for every foil card for every appID in the list price_to_appids[price_single_item]
 
-        for app_id in sorted(price_to_appids[price_single_item], key=str):
+        for app_id in sorted(app_ids, key=str):
             print(f"AppID: {app_id}")
             for market_name in appid_to_cards[app_id]:
                 print(f"- {market_name}")
